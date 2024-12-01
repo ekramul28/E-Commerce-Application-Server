@@ -13,54 +13,5 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Book{
-  bookId String @unique @default(uuid())
-  title String
-  genre String
-  publishedYear Int
-  totalCopies Int
-  availableCopies Int
-  isDeleted Boolean @default(false)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  @@map("books")
 
-  BorrowRecords   BorrowRecord[]
-}
-
-model Author{
-    autherId String @unique @default(uuid())
-    name String
-    bio String
-    deteOfBirth DateTime
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    @@map("authors")
-}
-
-model Member{
-    memberId String @unique @default(uuid())
-    name String
-    email String @unique
-    phone String
-    membershipDate DateTime
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    @@map("members")
-    BorrowRecords  BorrowRecord[]
-}
-
-model BorrowRecord {
-  id String @unique @default(uuid())
-  borrowDate DateTime @default(now())
-  returnDate DateTime?
-  bookId String   
-  memberId String   
-  
-  
-  Book Book @relation(fields: [bookId], references: [bookId])
-  Member Member @relation(fields: [memberId], references: [memberId])
-
-  @@map("borrowRecords")
-}
 
