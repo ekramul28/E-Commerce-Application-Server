@@ -5,6 +5,9 @@ import prisma from "../shared/prisma";
 import { IPaginationOptions } from "../../interfaces/pagination";
 import { userSearchAbleFields } from "./user.const";
 import { paginationHelper } from "../../helpars/paginationHelper";
+import { IAuthUser } from "../../interfaces/common";
+import { IFile } from "../../interfaces/file";
+import { fileUploader } from "../../helpars/fileUploader";
 
 const createAdmin = async (req: Request): Promise<Admin> => {
   const file = req.file as IFile;
@@ -17,7 +20,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
 
   const userData = {
-    email: req.body.admin.email,
+    email: req.body.email,
     password: hashedPassword,
     role: UserRole.ADMIN,
   };

@@ -7,7 +7,18 @@ datasource db {
   url      = env("DATABASE_URL") 
 }
 
-model User {
+model User{
+  id          String   @id @default(uuid())
+  email String
+  password String
+  vendor      Vendor?
+  admin       Admin?
+  customer    Customer?
+  
+  @@map("users")
+}
+
+model Customer {
   id          String   @id @default(uuid())
   name        String
   email       String   @unique
@@ -18,16 +29,15 @@ model User {
   role        UserRole
   orders      Order[]
   reviews     Review[]
-  cart        Cart?
-  vendor      Vendor?
-  admin       Admin?
+  cart        Cart[]
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id])
   followedShops Shop[] @relation("UserFollowedShops")
-  // recentViews Product[] @relation("UserRecentViews")
   recentView  RecentView[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
-  @@map("users")
+  @@map("customers")
 }
 
 
@@ -73,7 +83,7 @@ model Shop {
   vendorId    String   @unique
   vendor      Vendor   @relation(fields: [vendorId], references: [id])
   products    Product[]
-  followers   User[]   @relation("UserFollowedShops")
+  followers   Customer[]   @relation("UserFollowedShops")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -114,7 +124,7 @@ model Product {
 model Order {
   id           String     @id @default(uuid())
   userId       String
-  user         User       @relation(fields: [userId], references: [id])
+  customer         Customer       @relation(fields: [userId], references: [id])
   totalAmount  Float
   paymentId    String?
   status       OrderStatus
@@ -150,7 +160,7 @@ model Review {
   productId String
   product   Product  @relation(fields: [productId], references: [id])
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  customer      Customer     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -160,7 +170,7 @@ model Review {
 model Cart {
   id        String   @id @default(uuid())
   userId    String   @unique
-  user      User     @relation(fields: [userId], references: [id])
+  customer      Customer     @relation(fields: [userId], references: [id])
   items     CartItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -188,7 +198,7 @@ model Coupon {
 model RecentView {
   id        String   @id @default(uuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
+  customer      Customer     @relation(fields: [userId], references: [id])
   productId String
   product   Product  @relation(fields: [productId], references: [id])
   viewedAt  DateTime @default(now())
