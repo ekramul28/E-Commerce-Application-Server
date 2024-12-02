@@ -2,12 +2,13 @@ import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { v2 as cloudinary } from "cloudinary";
-import { ICloudinaryResponse, IFile } from "../app/interfaces/file";
+import { ICloudinaryResponse, IFile } from "../interfaces/file";
+import config from "../../config";
 
 cloudinary.config({
-  cloud_name: "dvtdneocc",
-  api_key: "625384168839741",
-  api_secret: "TK5cNSBfnvosPvnT55g8lehKhD0",
+  cloud_name: config.cloudinary_cloud_name,
+  api_key: config.cloudinary_api_key,
+  api_secret: config.cloudinary_api_secret,
 });
 
 const storage = multer.diskStorage({
@@ -39,7 +40,20 @@ const uploadToCloudinary = async (
   });
 };
 
+const multepaleImageuploadToCloudinary = async (
+  ImagesFiles: IFile[]
+): Promise<string[]> => {
+  const uploadPromises = ImagesFiles.map(async (imageFile) => {
+    const { secure_url }: any = await uploadToCloudinary(imageFile);
+    return secure_url;
+  });
+  const secureUrls = await Promise.all(uploadPromises);
+
+  return secureUrls;
+};
+
 export const fileUploader = {
   upload,
   uploadToCloudinary,
+  multepaleImageuploadToCloudinary,
 };
