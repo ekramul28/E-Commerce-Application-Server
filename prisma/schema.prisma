@@ -9,12 +9,15 @@ datasource db {
 
 model User{
   id          String   @id @default(uuid())
-  email String
-  password String
+  email       String @unique
+  password    String
   vendor      Vendor?
   admin       Admin?
   customer    Customer?
-  
+  status      UserStatus @default(ACTIVE)
+  role        UserRole
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   @@map("users")
 }
 
@@ -25,8 +28,6 @@ model Customer {
   password    String
   profilePhoto  String?
   contactNumber String?
-  status      UserStatus @default(ACTIVE)
-  role        UserRole
   orders      Order[]
   reviews     Review[]
   cart        Cart[]
@@ -56,6 +57,7 @@ enum UserStatus {
 
 model Vendor {
   id          String   @id @default(uuid())
+  email        String @unique
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
   shop        Shop?
@@ -68,6 +70,7 @@ model Vendor {
 model Admin {
   id        String   @id @default(uuid())
   userId    String   @unique
+  email    String @unique
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

@@ -1,4 +1,4 @@
-import { Admin, Prisma, UserRole, Vendor } from "@prisma/client";
+import { Admin, Prisma, UserRole, UserStatus, Vendor } from "@prisma/client";
 import * as bcrypt from "bcrypt";
 import { Request } from "express";
 import prisma from "../shared/prisma";
@@ -9,7 +9,7 @@ import { IAuthUser } from "../../interfaces/common";
 import { IFile } from "../../interfaces/file";
 import { fileUploader } from "../../helpars/fileUploader";
 
-const createAdmin = async (req: Request): Promise<Admin> => {
+const createAdmin = async (req: any): Promise<Admin> => {
   const file = req.file as IFile;
 
   if (file) {
@@ -40,7 +40,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
   return result;
 };
 
-const createVendor = async (req: Request): Promise<Vendor> => {
+const createVendor = async (req: any): Promise<Vendor> => {
   const file = req.file as IFile;
 
   if (file) {
@@ -70,7 +70,7 @@ const createVendor = async (req: Request): Promise<Vendor> => {
 
   return result;
 };
-const createCustomer = async (req: Request): Promise<Vendor> => {
+const createCustomer = async (req: any): Promise<Vendor> => {
   const file = req.file as IFile;
 
   if (file) {
@@ -190,13 +190,12 @@ const changeProfileStatus = async (id: string, status: UserRole) => {
 const getMyProfile = async (user: IAuthUser) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      email: user?.email,
+      id: user?.id,
       status: UserStatus.ACTIVE,
     },
     select: {
       id: true,
       email: true,
-      needPasswordChange: true,
       role: true,
       status: true,
     },
@@ -204,26 +203,20 @@ const getMyProfile = async (user: IAuthUser) => {
 
   let profileInfo;
 
-  if (userInfo.role === UserRole.SUPER_ADMIN) {
+  if (userInfo.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.findUnique({
       where: {
         email: userInfo.email,
       },
     });
-  } else if (userInfo.role === UserRole.ADMIN) {
-    profileInfo = await prisma.admin.findUnique({
+  } else if (userInfo.role === UserRole.VENDOR) {
+    profileInfo = await prisma.vendor.findUnique({
       where: {
         email: userInfo.email,
       },
     });
-  } else if (userInfo.role === UserRole.DOCTOR) {
-    profileInfo = await prisma.doctor.findUnique({
-      where: {
-        email: userInfo.email,
-      },
-    });
-  } else if (userInfo.role === UserRole.PATIENT) {
-    profileInfo = await prisma.patient.findUnique({
+  } else if (userInfo.role === UserRole.CUSTOMER) {
+    profileInfo = await prisma.customer.findUnique({
       where: {
         email: userInfo.email,
       },
@@ -233,10 +226,10 @@ const getMyProfile = async (user: IAuthUser) => {
   return { ...userInfo, ...profileInfo };
 };
 
-const updateMyProfie = async (user: IAuthUser, req: Request) => {
+const updateMyProfie = async (user: IAuthUser, req: any) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      email: user?.email,
+      id: user?.id,
       status: UserStatus.ACTIVE,
     },
   });
@@ -249,29 +242,22 @@ const updateMyProfie = async (user: IAuthUser, req: Request) => {
 
   let profileInfo;
 
-  if (userInfo.role === UserRole.SUPER_ADMIN) {
+  if (userInfo.role === UserRole.ADMIN) {
     profileInfo = await prisma.admin.update({
       where: {
         email: userInfo.email,
       },
       data: req.body,
     });
-  } else if (userInfo.role === UserRole.ADMIN) {
-    profileInfo = await prisma.admin.update({
+  } else if (userInfo.role === UserRole.CUSTOMER) {
+    profileInfo = await prisma.customer.update({
       where: {
         email: userInfo.email,
       },
       data: req.body,
     });
-  } else if (userInfo.role === UserRole.DOCTOR) {
-    profileInfo = await prisma.doctor.update({
-      where: {
-        email: userInfo.email,
-      },
-      data: req.body,
-    });
-  } else if (userInfo.role === UserRole.PATIENT) {
-    profileInfo = await prisma.patient.update({
+  } else if (userInfo.role === UserRole.VENDOR) {
+    profileInfo = await prisma.vendor.update({
       where: {
         email: userInfo.email,
       },
