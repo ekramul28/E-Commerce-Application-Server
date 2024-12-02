@@ -20,7 +20,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
 
   const userData = {
-    email: req.body.email,
+    email: req.body.admin.email,
     password: hashedPassword,
     role: UserRole.ADMIN,
   };
@@ -40,7 +40,7 @@ const createAdmin = async (req: Request): Promise<Admin> => {
   return result;
 };
 
-const createDoctor = async (req: Request): Promise<Vendor> => {
+const createVendor = async (req: Request): Promise<Vendor> => {
   const file = req.file as IFile;
 
   if (file) {
@@ -51,9 +51,9 @@ const createDoctor = async (req: Request): Promise<Vendor> => {
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
 
   const userData = {
-    email: req.body.doctor.email,
+    email: req.body.vendor.email,
     password: hashedPassword,
-    role: UserRole.DOCTOR,
+    role: UserRole.VENDOR,
   };
 
   const result = await prisma.$transaction(async (transactionClient) => {
@@ -61,8 +61,38 @@ const createDoctor = async (req: Request): Promise<Vendor> => {
       data: userData,
     });
 
-    const createdDoctorData = await transactionClient.doctor.create({
-      data: req.body.doctor,
+    const createdDoctorData = await transactionClient.vendor.create({
+      data: req.body.vendor,
+    });
+
+    return createdDoctorData;
+  });
+
+  return result;
+};
+const createCustomer = async (req: Request): Promise<Vendor> => {
+  const file = req.file as IFile;
+
+  if (file) {
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.doctor.profilePhoto = uploadToCloudinary?.secure_url;
+  }
+
+  const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
+
+  const userData = {
+    email: req.body.customer.email,
+    password: hashedPassword,
+    role: UserRole.VENDOR,
+  };
+
+  const result = await prisma.$transaction(async (transactionClient) => {
+    await transactionClient.user.create({
+      data: userData,
+    });
+
+    const createdDoctorData = await transactionClient.customer.create({
+      data: req.body.customer,
     });
 
     return createdDoctorData;
@@ -254,7 +284,8 @@ const updateMyProfie = async (user: IAuthUser, req: Request) => {
 
 export const userService = {
   createAdmin,
-  createDoctor,
+  createCustomer,
+  createVendor,
   getAllFromDB,
   changeProfileStatus,
   getMyProfile,

@@ -16,13 +16,22 @@ const createAdmin = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-
-const createDoctor = catchAsync(async (req: Request, res: Response) => {
-  const result = await userService.createDoctor(req);
+const createCustomer = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.createCustomer(req);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Doctor Created successfully!",
+    message: "Customer Created successfully!",
+    data: result,
+  });
+});
+
+const createVendor = catchAsync(async (req: Request, res: Response) => {
+  const result = await userService.createVendor(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Vendor Created successfully!",
     data: result,
   });
 });
@@ -86,8 +95,9 @@ const updateMyProfie = catchAsync(
 );
 
 export const userController = {
+  createCustomer,
   createAdmin,
-  createDoctor,
+  createVendor,
   getAllFromDB,
   changeProfileStatus,
   getMyProfile,

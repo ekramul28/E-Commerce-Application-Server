@@ -29,6 +29,15 @@ router.post(
     return userController.createAdmin(req, res, next);
   }
 );
+router.post(
+  "/create-customer",
+  auth(UserRole.ADMIN),
+  fileUploader.upload.single("file"),
+  (req: Request, res: Response, next: NextFunction) => {
+    req.body = userValidation.createAdmin.parse(JSON.parse(req.body.data));
+    return userController.createCustomer(req, res, next);
+  }
+);
 
 router.post(
   "/create-vendor",
@@ -36,7 +45,7 @@ router.post(
   fileUploader.upload.single("file"),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = userValidation.createVendor.parse(JSON.parse(req.body.data));
-    return userController.createDoctor(req, res, next);
+    return userController.createVendor(req, res, next);
   }
 );
 
