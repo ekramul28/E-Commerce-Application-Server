@@ -106,7 +106,7 @@ const changePassword = async (user: any, payload: any) => {
   };
 };
 
-const forgotPassword = async (payload: { email: string }) => {
+const forgotPassword = async (payload: { id: string }) => {
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
       id: payload.id,
