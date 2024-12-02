@@ -15,6 +15,7 @@ model User{
   admin       Admin?
   customer    Customer?
   status      UserStatus @default(ACTIVE)
+  needPasswordChange Boolean    @default(true)
   role        UserRole
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

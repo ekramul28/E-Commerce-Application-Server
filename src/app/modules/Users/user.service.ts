@@ -150,6 +150,7 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
       role: true,
       status: true,
       createdAt: true,
+      needPasswordChange: true,
       updatedAt: true,
       admin: true,
       vendor: true,
@@ -196,6 +197,7 @@ const getMyProfile = async (user: IAuthUser) => {
     select: {
       id: true,
       email: true,
+      needPasswordChange: true,
       role: true,
       status: true,
     },
