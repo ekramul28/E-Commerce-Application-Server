@@ -16,10 +16,5 @@ route.patch(
   AdminController.updateAdmin
 );
 route.delete("/:id", auth(UserRole.ADMIN), AdminController.deleteAdmin);
-route.delete(
-  "/soft/:id",
-  auth(UserRole.ADMIN),
-  AdminController.softDeleteAdmin
-);
 
 export const AdminRouter = route;

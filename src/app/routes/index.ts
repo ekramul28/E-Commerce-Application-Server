@@ -2,6 +2,10 @@ import express from "express";
 import { userRoutes } from "../modules/Users/user.route";
 import { productRoutes } from "../modules/Product/product.route";
 import { AuthRoutes } from "../modules/Auth/auth.route";
+import { shopRoutes } from "../modules/Shop/shop.route";
+import { CustomerRouter } from "../modules/Customer/customer.route";
+import { VendorRouter } from "../modules/Vendor/vendor.route";
+import { AdminRouter } from "../modules/Admin/admin.route";
 
 const router = express.Router();
 
@@ -17,6 +21,22 @@ const moduleRoutes = [
   {
     path: "/product",
     router: productRoutes,
+  },
+  {
+    path: "/admin",
+    router: AdminRouter,
+  },
+  {
+    path: "/customer",
+    router: CustomerRouter,
+  },
+  {
+    path: "/vendor",
+    router: VendorRouter,
+  },
+  {
+    path: "/shop",
+    router: shopRoutes,
   },
 ];
 

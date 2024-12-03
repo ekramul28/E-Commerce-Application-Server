@@ -16,4 +16,4 @@ route.patch(
 );
 route.delete("/:id", auth(UserRole.ADMIN), CustomerController.deleteCustomer);
 
-export const AdminRouter = route;
+export const CustomerRouter = route;

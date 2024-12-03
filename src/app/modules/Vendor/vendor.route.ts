@@ -16,4 +16,4 @@ route.patch(
 );
 route.delete("/:id", auth(UserRole.ADMIN), VendorController.deleteVendor);
 
-export const AdminRouter = route;
+export const VendorRouter = route;
