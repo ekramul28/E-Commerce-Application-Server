@@ -33,8 +33,6 @@ const getCustomerFromDB = async (
     });
   }
 
-  andCondition.push({ isDeleted: false });
-
   const whereConditions: Prisma.CustomerWhereInput = { AND: andCondition };
   const result = await prisma.customer.findMany({
     where: whereConditions,
@@ -66,7 +64,6 @@ const getCustomerByIdFromDB = async (id: string): Promise<Customer | null> => {
   const result = await prisma.customer.findUnique({
     where: {
       id,
-      isDeleted: false,
     },
   });
   return result;
@@ -79,7 +76,6 @@ const updateCustomerFromDB = async (
   await prisma.customer.findUniqueOrThrow({
     where: {
       id,
-      isDeleted: false,
     },
   });
   const result = await prisma.customer.update({
@@ -112,41 +108,10 @@ const deleteCustomerFromDB = async (id: string): Promise<Customer | null> => {
   });
   return result;
 };
-const softDeleteCustomerFromDB = async (
-  id: string
-): Promise<Customer | null> => {
-  await prisma.customer.findUniqueOrThrow({
-    where: {
-      id,
-    },
-  });
-  const result = await prisma.$transaction(async (transactionClient) => {
-    const customerDeletedData = await transactionClient.admin.update({
-      where: {
-        id,
-        isDeleted: false,
-      },
-      data: {
-        isDeleted: true,
-      },
-    });
-    await transactionClient.user.update({
-      where: {
-        email: customerDeletedData.email,
-      },
-      data: {
-        status: UserStatus.DELETED,
-      },
-    });
-    return customerDeletedData;
-  });
-  return result;
-};
 
-export const AdminService = {
+export const CustomerService = {
   getCustomerFromDB,
   getCustomerByIdFromDB,
   updateCustomerFromDB,
   deleteCustomerFromDB,
-  softDeleteCustomerFromDB,
 };
