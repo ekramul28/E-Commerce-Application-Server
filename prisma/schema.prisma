@@ -17,6 +17,7 @@ model User{
   status      UserStatus @default(ACTIVE)
   needPasswordChange Boolean    @default(true)
   role        UserRole
+  isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   @@map("users")
