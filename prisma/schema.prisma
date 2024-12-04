@@ -37,6 +37,7 @@ model Customer {
   user        User     @relation(fields: [userId], references: [id])
   followedShops Shop[] @relation("UserFollowedShops")
   recentView  RecentView[]
+  isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
@@ -63,6 +64,7 @@ model Vendor {
   userId      String   @unique
   user        User     @relation(fields: [userId], references: [id])
   shop        Shop?
+  isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -76,7 +78,7 @@ model Admin {
   user      User     @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
+  isDeleted   Boolean @default(false)
   @@map("admins")
 }
 
@@ -89,6 +91,7 @@ model Shop {
   vendor      Vendor   @relation(fields: [vendorId], references: [id])
   products    Product[]
   followers   Customer[]   @relation("UserFollowedShops")
+  isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
@@ -117,7 +120,7 @@ model Product {
   shopId      String
   shop        Shop     @relation(fields: [shopId], references: [id])
   reviews     Review[]
-  orders      OrderItem[]
+  orders      Order[]
   cartItem    CartItem[]
   recentView  RecentView[]
   isDeleted   Boolean @default(false)
@@ -129,27 +132,19 @@ model Product {
 
 model Order {
   id           String     @id @default(uuid())
-  userId       String
-  customer         Customer       @relation(fields: [userId], references: [id])
-  totalAmount  Float
+  customerId       String
+  customer         Customer       @relation(fields: [customerId], references: [id])
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
   paymentId    String?
-  status       OrderStatus
-  items        OrderItem[]
+  status       OrderStatus @default(PENDING)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   @@map("orders")
 }
 
-model OrderItem {
-  id        String   @id @default(uuid())
-  productId String
-  product   Product  @relation(fields: [productId], references: [id])
-  orderId   String
-  order     Order    @relation(fields: [orderId], references: [id])
-  quantity  Int
-  price     Float
-}
+
 
 enum OrderStatus {
   PENDING
