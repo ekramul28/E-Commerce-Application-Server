@@ -33,8 +33,7 @@ model Customer {
   orders      Order[]
   reviews     Review[]
   cart        Cart[]
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [email], references: [email])
   followedShops Shop[] @relation("UserFollowedShops")
   recentView  RecentView[]
   isDeleted   Boolean @default(false)
@@ -60,9 +59,11 @@ enum UserStatus {
 
 model Vendor {
   id          String   @id @default(uuid())
+  name  String
   email        String @unique
-  userId      String   @unique
-  user        User     @relation(fields: [userId], references: [id])
+  profilePhoto  String?
+  contactNumber String?
+  user        User     @relation(fields: [email], references: [email])
   shop        Shop?
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
@@ -73,12 +74,15 @@ model Vendor {
 
 model Admin {
   id        String   @id @default(uuid())
-  userId    String   @unique
+  name  String
+  profilePhoto  String?
+  contactNumber String?
   email    String @unique
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [email], references: [email])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   isDeleted   Boolean @default(false)
+
   @@map("admins")
 }
 

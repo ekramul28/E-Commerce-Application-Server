@@ -30,10 +30,20 @@ const createVendor = z.object({
 });
 
 const createAdmin = z.object({
-  id: z.string().uuid().optional(), // Prisma will auto-generate
-  userId: z.string().uuid().optional(), // User ID is a UUID
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  password: z.string({
+    required_error: "Password is required",
+  }),
+  admin: z.object({
+    name: z.string({
+      required_error: "Name is required!",
+    }),
+    email: z.string({
+      required_error: "Email is required!",
+    }),
+    contactNumber: z.string({
+      required_error: "Contact Number is required!",
+    }),
+  }),
 });
 
 const updateStatus = z.object({

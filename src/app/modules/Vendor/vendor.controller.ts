@@ -6,22 +6,20 @@ import catchAsync from "../../middlewares/catchAsync";
 import { VendorService } from "./vendor.service";
 import { vendorFilterableFields } from "./vendor.constant";
 
-const getVendor: RequestHandler = catchAsync(
-  async (req: Request, res: Response) => {
-    const filters = pick(req.query, vendorFilterableFields);
-    const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+const getVendor = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, vendorFilterableFields);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
 
-    console.log("this is option", options);
-    const result = await VendorService.getVendorFromDB(filters, options);
-    sendResponse(res, {
-      statusCode: httpStatus.OK,
-      success: true,
-      message: "Vendor Data fetched",
-      meta: result.meta,
-      data: result.data,
-    });
-  }
-);
+  console.log("this is option", options);
+  const result = await VendorService.getVendorFromDB(filters, options);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Vendor Data fetched",
+    meta: result.meta,
+    data: result.data,
+  });
+});
 const getVendorById = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
   const result = await VendorService.getVenderByIdFromDB(id);
@@ -56,7 +54,7 @@ const deleteVendor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const CustomerController = {
+export const VendorController = {
   getVendor,
   getVendorById,
   updateVendor,
