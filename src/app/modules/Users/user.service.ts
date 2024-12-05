@@ -13,17 +13,21 @@ const createAdmin = async (req: any): Promise<Admin> => {
   console.log("data", req.body);
 
   const file = req.file as IFile;
+  console.log(file);
 
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
     req.body.admin.profilePhoto = uploadToCloudinary?.secure_url;
   }
-
+  console.log(req.body);
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
 
   const userData = {
     email: req.body.admin.email,
     password: hashedPassword,
+    profilePhoto:
+      req.body.admin.profilePhoto ||
+      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
     role: UserRole.ADMIN,
   };
 
@@ -47,7 +51,7 @@ const createVendor = async (req: any): Promise<Vendor> => {
 
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-    req.body.doctor.profilePhoto = uploadToCloudinary?.secure_url;
+    req.body.vendor.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);
@@ -77,7 +81,7 @@ const createCustomer = async (req: any): Promise<Vendor> => {
 
   if (file) {
     const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
-    req.body.doctor.profilePhoto = uploadToCloudinary?.secure_url;
+    req.body.customer.profilePhoto = uploadToCloudinary?.secure_url;
   }
 
   const hashedPassword: string = await bcrypt.hash(req.body.password, 12);

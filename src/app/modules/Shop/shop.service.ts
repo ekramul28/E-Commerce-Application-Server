@@ -13,7 +13,7 @@ const createShopIntoDB = async (req: any) => {
   if (file) {
     const uploadToCloudinary =
       await fileUploader.multepaleImageuploadToCloudinary(file);
-    req.body.images = uploadToCloudinary;
+    req.body.logo = uploadToCloudinary;
   }
   const createdProductData = await prisma.shop.create({
     data: req.body,

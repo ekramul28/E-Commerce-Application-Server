@@ -26,12 +26,20 @@ const loginUser = async (payload: { email: string; password: string }) => {
   }
 
   const accessToken = jwtHelpers.generateToken(
-    { email: userData.email, role: userData.role },
+    {
+      email: userData.email,
+      role: userData.role,
+      imageUrl: userData.profilePhoto,
+    },
     config.jwt_secret as string,
     config.expire_in as string
   );
   const refreshToken = jwtHelpers.generateToken(
-    { email: userData.email, role: userData.role },
+    {
+      email: userData.email,
+      role: userData.role,
+      imageUrl: userData.profilePhoto,
+    },
     config.REFRESH_TOKEN_SECRET as string,
     config.REFRESH_TOKEN_EXPIRES_IN as string
   );
@@ -61,7 +69,11 @@ const refreshToken = async (token: string) => {
   });
 
   const accessToken = jwtHelpers.generateToken(
-    { email: userData?.email, role: userData?.role },
+    {
+      email: userData?.email,
+      role: userData?.role,
+      imageUrl: userData.profilePhoto,
+    },
     config.jwt_secret as string,
     config.expire_in as string
   );
@@ -115,14 +127,19 @@ const forgotPassword = async (payload: { id: string }) => {
   });
 
   const resetPassToken = jwtHelpers.generateToken(
-    { email: userData.email, role: userData.role },
+    {
+      email: userData.email,
+      role: userData.role,
+      imageUrl: userData.profilePhoto,
+    },
     config.reset_pass_secret as string,
     config.reset_pass_token_expires_in as string
   );
   //console.log(resetPassToken)
 
   const resetPassLink =
-    config.reset_pass_link + `?userId=${userData.id}&token=${resetPassToken}`;
+    config.reset_pass_ui_link +
+    `?userId=${userData.id}&token=${resetPassToken}`;
 
   await emailSender(
     userData.email,

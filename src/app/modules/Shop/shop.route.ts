@@ -9,10 +9,10 @@ const router = express.Router();
 router.post(
   "/",
   auth(UserRole.ADMIN, UserRole.VENDOR),
-  fileUploader.upload.fields([{ name: "Images" }]),
+  fileUploader.upload.single("Image"),
   ShopController.createShop
 );
-router.get("/", auth(UserRole.ADMIN, UserRole.VENDOR), ShopController.getShop);
+router.get("/", auth(UserRole.ADMIN), ShopController.getShop);
 router.get(
   "/:id",
   auth(UserRole.ADMIN, UserRole.VENDOR),

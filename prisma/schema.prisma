@@ -11,6 +11,7 @@ model User{
   id          String   @id @default(uuid())
   email       String @unique
   password    String
+  profilePhoto String?
   vendor      Vendor?
   admin       Admin?
   customer    Customer?
@@ -105,6 +106,8 @@ model Shop {
 model Category {
   id          String   @id @default(uuid())
   name        String   @unique
+  image       String?
+  offer       String?
   products    Product[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

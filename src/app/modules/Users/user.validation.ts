@@ -22,11 +22,20 @@ const createUser = z.object({
 });
 
 const createVendor = z.object({
-  id: z.string().uuid().optional(), // Prisma will auto-generate
-  userId: z.string().uuid().optional(), // User ID is a UUID
-  shop: z.string().optional().nullable(), // Assuming shop ID is a string
-  createdAt: z.date().optional(),
-  updatedAt: z.date().optional(),
+  password: z.string({
+    required_error: "Password is required",
+  }),
+  vendor: z.object({
+    name: z.string({
+      required_error: "Name is required!",
+    }),
+    email: z.string({
+      required_error: "Email is required!",
+    }),
+    contactNumber: z.string({
+      required_error: "Contact Number is required!",
+    }),
+  }),
 });
 
 const createAdmin = z.object({
