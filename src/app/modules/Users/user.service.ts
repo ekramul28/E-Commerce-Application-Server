@@ -25,9 +25,7 @@ const createAdmin = async (req: any): Promise<Admin> => {
   const userData = {
     email: req.body.admin.email,
     password: hashedPassword,
-    profilePhoto:
-      req.body.admin.profilePhoto ||
-      "https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y",
+    profilePhoto: req.body.admin.profilePhoto || null,
     role: UserRole.ADMIN,
   };
 
@@ -59,6 +57,7 @@ const createVendor = async (req: any): Promise<Vendor> => {
   const userData = {
     email: req.body.vendor.email,
     password: hashedPassword,
+    profilePhoto: req.body.vendor.profilePhoto || null,
     role: UserRole.VENDOR,
   };
 
@@ -89,6 +88,7 @@ const createCustomer = async (req: any): Promise<Vendor> => {
   const userData = {
     email: req.body.customer.email,
     password: hashedPassword,
+    profilePhoto: req.body.customer.profilePhoto || null,
     role: UserRole.VENDOR,
   };
 
