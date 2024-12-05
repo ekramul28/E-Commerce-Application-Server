@@ -19,6 +19,26 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
+// import { PrismaClient } from "@prisma/client";
+
+// const prisma = new PrismaClient();
+
+// async function deleteAllData() {
+//   try {
+//     // Delete all records from tables in the correct order
+//     await prisma.shop.deleteMany(); // Replace with your actual table names
+//     await prisma.vendor.deleteMany(); // Replace with your actual table names
+
+//     console.log("All data deleted successfully.");
+//   } catch (error) {
+//     console.error("Error deleting data:", error);
+//   } finally {
+//     await prisma.$disconnect();
+//   }
+// }
+
+// deleteAllData();
+
 app.use("/api/v1", router);
 
 app.use(globalErrorHandler);

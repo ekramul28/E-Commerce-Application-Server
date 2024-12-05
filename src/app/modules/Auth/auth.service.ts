@@ -30,6 +30,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: userData.email,
       role: userData.role,
       imageUrl: userData.profilePhoto,
+      userId: userData.id,
     },
     config.jwt_secret as string,
     config.expire_in as string
@@ -39,6 +40,7 @@ const loginUser = async (payload: { email: string; password: string }) => {
       email: userData.email,
       role: userData.role,
       imageUrl: userData.profilePhoto,
+      userId: userData.id,
     },
     config.REFRESH_TOKEN_SECRET as string,
     config.REFRESH_TOKEN_EXPIRES_IN as string
@@ -73,6 +75,7 @@ const refreshToken = async (token: string) => {
       email: userData?.email,
       role: userData?.role,
       imageUrl: userData.profilePhoto,
+      userId: userData.id,
     },
     config.jwt_secret as string,
     config.expire_in as string
@@ -131,6 +134,7 @@ const forgotPassword = async (payload: { id: string }) => {
       email: userData.email,
       role: userData.role,
       imageUrl: userData.profilePhoto,
+      userId: userData.id,
     },
     config.reset_pass_secret as string,
     config.reset_pass_token_expires_in as string

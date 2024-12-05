@@ -8,14 +8,25 @@ import { IShopFilterRequest } from "./shop.interface";
 import { ShopSearchAbleFields } from "./shop.const";
 
 const createShopIntoDB = async (req: any) => {
-  const file = req.file as IFile[];
+  const isShopExist = await prisma.shop.findFirst({
+    where: {
+      email: req.body?.email,
+    },
+  });
+
+  if (isShopExist) {
+    throw new Error("Already Shop added");
+  }
+
+  const file = req.file as IFile;
+  console.log("ifle", file);
 
   if (file) {
-    const uploadToCloudinary =
-      await fileUploader.multepaleImageuploadToCloudinary(file);
-    req.body.logo = uploadToCloudinary;
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.logo = uploadToCloudinary?.secure_url;
   }
   console.log("shop", req.body);
+
   const createdProductData = await prisma.shop.create({
     data: req.body,
   });

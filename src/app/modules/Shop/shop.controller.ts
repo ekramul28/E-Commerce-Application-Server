@@ -4,9 +4,10 @@ import sendResponse from "../shared/sendResponse";
 import pick from "../shared/pick";
 import { ShopService } from "./shop.service";
 import { shopFilterableFields } from "./shop.const";
+import httpStatus from "http-status";
 
 const createShop = catchAsync(async (req: Request, res: Response) => {
-  const result = await ShopService.createShopIntoDB(req.body);
+  const result = await ShopService.createShopIntoDB(req);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
