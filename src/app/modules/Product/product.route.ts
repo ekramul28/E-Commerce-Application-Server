@@ -20,12 +20,12 @@ router.post(
 );
 router.get(
   "/",
-  auth(UserRole.ADMIN, UserRole.VENDOR),
+
   productController.getProductIntoDB
 );
 router.get(
   "/:id",
-  auth(UserRole.ADMIN, UserRole.VENDOR),
+
   productController.getProductById
 );
 router.patch(

@@ -64,6 +64,41 @@ const getProductIntoDB = async (
         : {
             createdAt: "desc",
           },
+    select: {
+      id: true,
+      name: true,
+      description: true,
+      price: true,
+      images: true,
+      discount: true,
+      categoryId: true,
+      category: true,
+      shopId: true,
+      shop: true,
+      reviews: {
+        select: {
+          id: true,
+        },
+      },
+      orders: {
+        select: {
+          id: true,
+        },
+      },
+      cartItem: {
+        select: {
+          id: true,
+        },
+      },
+      recentView: {
+        select: {
+          id: true,
+        },
+      },
+      isDeleted: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   const total = await prisma.product.count({
     where: whereConditions,
