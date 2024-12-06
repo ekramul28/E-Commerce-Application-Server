@@ -96,7 +96,7 @@ const getShopIntoDB = async (
 const getShopByIdFromDB = async (id: string): Promise<Shop | null> => {
   const result = await prisma.shop.findUnique({
     where: {
-      id,
+      vendorId: id,
     },
   });
   return result;

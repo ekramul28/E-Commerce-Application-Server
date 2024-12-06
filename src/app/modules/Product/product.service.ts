@@ -8,11 +8,10 @@ import { productSearchAbleFields } from "./product.const";
 import { IProductFilterRequest } from "./product.interface";
 
 const createProductIntoDB = async (req: any) => {
-  const file = req.file as IFile[];
-
-  if (file) {
+  const files = req.files.files as IFile[];
+  if (files) {
     const uploadToCloudinary =
-      await fileUploader.multepaleImageuploadToCloudinary(file);
+      await fileUploader.multepaleImageuploadToCloudinary(files);
     req.body.images = uploadToCloudinary;
   }
   const createdProductData = await prisma.product.create({

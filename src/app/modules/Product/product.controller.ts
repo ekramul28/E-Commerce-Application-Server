@@ -4,9 +4,9 @@ import sendResponse from "../shared/sendResponse";
 import { ProductService } from "./product.service";
 import pick from "../shared/pick";
 import { productFilterableFields } from "./product.const";
-
+import httpStatus from "http-status";
 const createProduct = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProductService.createProductIntoDB(req.body);
+  const result = await ProductService.createProductIntoDB(req);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,

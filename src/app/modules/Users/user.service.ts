@@ -236,8 +236,7 @@ const getMyProfile = async (user: IAuthUser) => {
 const updateMyProfie = async (user: IAuthUser, req: any) => {
   const userInfo = await prisma.user.findUniqueOrThrow({
     where: {
-      id: user?.id,
-      status: UserStatus.ACTIVE,
+      id: user?.userId,
     },
   });
 

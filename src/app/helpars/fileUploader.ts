@@ -45,10 +45,10 @@ const multepaleImageuploadToCloudinary = async (
 ): Promise<string[]> => {
   const uploadPromises = ImagesFiles.map(async (imageFile) => {
     const { secure_url }: any = await uploadToCloudinary(imageFile);
+
     return secure_url;
   });
   const secureUrls = await Promise.all(uploadPromises);
-
   return secureUrls;
 };
 

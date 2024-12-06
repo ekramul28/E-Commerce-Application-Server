@@ -121,11 +121,11 @@ model Product {
   id          String   @id @default(uuid())
   name        String
   description String?
-  price       Float
+  price       String
   images      String[] // Array of image URLs
-  discount    Float?
-  offerDiscount Float?
-  Quantity     Int
+  discount    String?
+  offerDiscount String?
+  Quantity     String
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   shopId      String
