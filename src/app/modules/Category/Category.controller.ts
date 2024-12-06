@@ -2,9 +2,10 @@ import httpStatus from "http-status";
 import sendResponse from "../shared/sendResponse";
 import catchAsync from "../../middlewares/catchAsync";
 import { CategoryServices } from "./Category.service";
+import { Request, Response } from "express";
 
-const createItemCategory = catchAsync(async (req, res) => {
-  const itemCategory = await CategoryServices.createItemCategory(req.body);
+const createItemCategory = catchAsync(async (req: Request, res: Response) => {
+  const itemCategory = await CategoryServices.createItemCategory(req);
 
   sendResponse(res, {
     success: true,

@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const createItemCategoryValidationSchema = z.object({
+const createCategoryValidationSchema = z.object({
   body: z.object({
     name: z.string({
       required_error: "Name is required",
@@ -14,7 +14,7 @@ const updateItemCategoryValidationSchema = z.object({
   }),
 });
 
-export const ItemCategoryValidation = {
-  createItemCategoryValidationSchema,
+export const CategoryValidation = {
+  createCategoryValidationSchema,
   updateItemCategoryValidationSchema,
 };

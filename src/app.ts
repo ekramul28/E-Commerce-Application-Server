@@ -27,7 +27,7 @@ app.get("/", (req: Request, res: Response) => {
 //   try {
 //     // Delete all records from tables in the correct order
 //     await prisma.shop.deleteMany(); // Replace with your actual table names
-//     await prisma.vendor.deleteMany(); // Replace with your actual table names
+//     // await prisma.vendor.deleteMany(); // Replace with your actual table names
 
 //     console.log("All data deleted successfully.");
 //   } catch (error) {

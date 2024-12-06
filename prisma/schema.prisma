@@ -35,7 +35,7 @@ model Customer {
   reviews     Review[]
   cart        Cart[]
   user        User     @relation(fields: [email], references: [email])
-  followedShops Shop[] 
+  followedShops Shop[] @relation("ShopFollowers")
   recentView  RecentView[]
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
@@ -97,13 +97,14 @@ model Shop {
   vendorId    String   @unique
   vendor      Vendor   @relation(fields: [vendorId], references: [id])
   products    Product[]
-  followers   Customer[]   
+  followers   Customer[]   @relation("ShopFollowers")
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
   @@map("shops")
 }
+
 
 model Category {
   id          String   @id @default(uuid())
@@ -121,9 +122,10 @@ model Product {
   name        String
   description String?
   price       Float
-  inventory   Int
   images      String[] // Array of image URLs
   discount    Float?
+  offerDiscount Float?
+  Quantity     Int
   categoryId  String
   category    Category @relation(fields: [categoryId], references: [id])
   shopId      String

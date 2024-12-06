@@ -1,9 +1,17 @@
 import { Category } from "@prisma/client";
 import prisma from "../shared/prisma";
-import { TItemCategory } from "./Category.interface";
+import { IFile } from "../../interfaces/file";
+import { fileUploader } from "../../helpars/fileUploader";
 
-const createItemCategory = async (itemCategory: TItemCategory) => {
-  const result = await prisma.category.create({ data: itemCategory });
+const createItemCategory = async (req: any) => {
+  const file = req.file as IFile;
+
+  if (file) {
+    const uploadToCloudinary = await fileUploader.uploadToCloudinary(file);
+    req.body.image = uploadToCloudinary?.secure_url;
+  }
+
+  const result = await prisma.category.create({ data: req.body });
   return result;
 };
 
