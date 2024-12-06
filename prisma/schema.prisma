@@ -35,7 +35,7 @@ model Customer {
   reviews     Review[]
   cart        Cart[]
   user        User     @relation(fields: [email], references: [email])
-  followedShops Shop[] @relation("UserFollowedShops")
+  followedShops Shop[] 
   recentView  RecentView[]
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
@@ -58,20 +58,6 @@ enum UserStatus {
   DELETED
 }
 
-model Vendor {
-  id          String   @id @default(uuid())
-  name  String
-  email        String @unique
-  profilePhoto  String?
-  contactNumber String?
-  user        User     @relation(fields: [email], references: [email])
-  shop        Shop?
-  isDeleted   Boolean @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  @@map("vendors")
-}
 
 model Admin {
   id        String   @id @default(uuid())
@@ -87,15 +73,31 @@ model Admin {
   @@map("admins")
 }
 
+model Vendor {
+  id          String   @id @default(uuid())
+  name  String
+  email        String @unique
+  profilePhoto  String?
+  contactNumber String?
+  user        User     @relation(fields: [email], references: [email])
+  shop        Shop?
+  isDeleted   Boolean @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("vendors")
+}
+
+
 model Shop {
   id          String   @id @default(uuid())
   name        String
   logo        String
   description String?
-  email    String   @unique
-  vendor      Vendor   @relation(fields: [email], references: [email])
+  vendorId    String   @unique
+  vendor      Vendor   @relation(fields: [vendorId], references: [id])
   products    Product[]
-  followers   Customer[]   @relation("UserFollowedShops")
+  followers   Customer[]   
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt

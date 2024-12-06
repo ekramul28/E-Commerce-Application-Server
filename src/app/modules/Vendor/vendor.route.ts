@@ -6,7 +6,7 @@ import { UserRole } from "@prisma/client";
 import { VendorController } from "./vendor.controller";
 const route = express.Router();
 
-route.get("/", auth(UserRole.ADMIN), VendorController.getVendor);
+// route.get("/", auth(UserRole.ADMIN), VendorController.getVendor);
 route.get("/:id", auth(UserRole.ADMIN), VendorController.getVendorById);
 route.patch(
   "/:id",

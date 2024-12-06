@@ -16,7 +16,7 @@ router.get(
 
 router.get(
   "/me",
-  auth(UserRole.ADMIN, UserRole.VENDOR),
+  auth(UserRole.ADMIN, UserRole.VENDOR, UserRole.CUSTOMER),
   userController.getMyProfile
 );
 

@@ -7,8 +7,8 @@ const createShop = z.object({
   description: z.string({
     required_error: "description is required!",
   }),
-  email: z.string({
-    required_error: "email is required!",
+  vendorId: z.string({
+    required_error: "vendorId is required!",
   }),
   logo: z
     .string({

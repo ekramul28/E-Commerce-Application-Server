@@ -8,9 +8,13 @@ import { IShopFilterRequest } from "./shop.interface";
 import { ShopSearchAbleFields } from "./shop.const";
 
 const createShopIntoDB = async (req: any) => {
+  await prisma.vendor.findUniqueOrThrow({
+    where: { id: req.body?.vendorId },
+  });
+
   const isShopExist = await prisma.shop.findFirst({
     where: {
-      email: req.body?.email,
+      id: req.body?.id,
     },
   });
 
