@@ -5,6 +5,7 @@ import { ProductService } from "./product.service";
 import pick from "../shared/pick";
 import { productFilterableFields } from "./product.const";
 import httpStatus from "http-status";
+
 const createProduct = catchAsync(async (req: Request, res: Response) => {
   const result = await ProductService.createProductIntoDB(req);
   sendResponse(res, {
@@ -15,8 +16,16 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getProductIntoDB = catchAsync(async (req: Request, res: Response) => {
+  console.log("productAll", req.query);
   const filters = pick(req.query, productFilterableFields);
-  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
+  const options = pick(req.query, [
+    "limit",
+    "page",
+    "sortBy",
+    "sortOrder",
+    "offer",
+    "priceRange",
+  ]);
   const result = await ProductService.getProductIntoDB(filters, options);
   sendResponse(res, {
     statusCode: httpStatus.OK,

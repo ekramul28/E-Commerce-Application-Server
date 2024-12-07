@@ -25,8 +25,10 @@ const getProductIntoDB = async (
   params: IProductFilterRequest,
   options: IPaginationOptions
 ) => {
+  console.log({ params });
   const { page, limit, skip, sortBy, sortOrder } =
     paginationHelper.calculatePagination(options);
+
   const { searchTerm, ...filterData } = params;
   if (Object.keys(filterData).length > 0) {
     AND: Object.keys(filterData).map((key) => ({
@@ -48,6 +50,36 @@ const getProductIntoDB = async (
       })),
     });
   }
+  if (params.categoryId) {
+    andCondition.push({
+      OR: productSearchAbleFields.map((field) => ({
+        [field]: {
+          contains: params.categoryId,
+        },
+      })),
+    });
+  }
+
+  if (params.price) {
+    const [minPrice, maxPrice] = params.price.split(",").map(String);
+    console.log(minPrice, maxPrice);
+    andCondition.push({
+      price: {
+        gte: minPrice,
+        lte: maxPrice,
+      },
+    });
+  }
+
+  // if (params.offer) {
+  //   andCondition.push({
+  //     OR: productSearchAbleFields.map((field) => ({
+  //       [field]: {
+  //         contains: params.offer,
+  //       },
+  //     })),
+  //   });
+  // }
 
   andCondition.push({ isDeleted: false });
 
@@ -71,6 +103,8 @@ const getProductIntoDB = async (
       price: true,
       images: true,
       discount: true,
+      offer: true,
+      offerDiscount: true,
       categoryId: true,
       category: true,
       shopId: true,

@@ -124,6 +124,7 @@ model Product {
   price       String
   images      String[] // Array of image URLs
   discount    String?
+  offer       String
   offerDiscount String?
   Quantity     String
   categoryId  String

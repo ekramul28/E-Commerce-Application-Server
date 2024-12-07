@@ -16,13 +16,20 @@ const createProductValidationSchema = z.object({
   Quantity: z.string({
     required_error: "Quantity is required",
   }),
-  discount: z.string({
-    required_error: "discount is required",
-  }),
+  discount: z
+    .string({
+      required_error: "discount is required",
+    })
+    .optional(),
   price: z.string({
     required_error: "discount is required",
   }),
-  offerDiscount: z.string({
+  offerDiscount: z
+    .string({
+      required_error: "offerDiscount is required",
+    })
+    .optional(),
+  offer: z.string({
     required_error: "offer is required",
   }),
 });
@@ -64,6 +71,11 @@ const updateProductValidationSchema = z.object({
     })
     .optional(),
   offerDiscount: z
+    .string({
+      required_error: "offerDiscount is required",
+    })
+    .optional(),
+  offer: z
     .string({
       required_error: "offer is required",
     })

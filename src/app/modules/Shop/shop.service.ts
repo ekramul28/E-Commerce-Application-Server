@@ -79,6 +79,27 @@ const getShopIntoDB = async (
         : {
             createdAt: "desc",
           },
+    select: {
+      id: true,
+      name: true,
+      logo: true,
+      description: true,
+      vendorId: true,
+      vendor: true,
+      products: {
+        select: {
+          id: true,
+        },
+      },
+      followers: {
+        select: {
+          id: true,
+        },
+      },
+      isDeleted: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   const total = await prisma.shop.count({
     where: whereConditions,

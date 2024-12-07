@@ -1,7 +1,2 @@
-export const productSearchAbleFields = ["name", "email", "contactNumber"];
-export const productFilterableFields = [
-  "name",
-  "email",
-  "searchTerm",
-  "contactNumber",
-];
+export const productSearchAbleFields = ["name", "description", "categoryId"];
+export const productFilterableFields = ["name", "categoryId", "offer", "price"];
