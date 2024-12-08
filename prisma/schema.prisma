@@ -186,8 +186,8 @@ enum OrderStatus {
 
 model Cart {
   id        String   @id @default(uuid())
-  customerId    String   @unique
-  customer      Customer     @relation(fields: [customerId], references: [id])
+  email    String   @unique
+  customer      Customer     @relation(fields: [email], references: [email])
   items     CartItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

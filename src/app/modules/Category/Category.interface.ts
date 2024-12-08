@@ -1,5 +1,3 @@
-import { Document, Model } from 'mongoose';
-
 // Interface for the ItemCategory document
 export interface ItemCategoryDocument extends Document {
   name: string;
@@ -17,4 +15,3 @@ export type TItemCategory = {
 };
 
 // Interface for the ItemCategory model (if no static methods)
-export type ItemCategoryModel = Model<ItemCategoryDocument>;

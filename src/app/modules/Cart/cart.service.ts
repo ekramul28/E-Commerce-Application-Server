@@ -2,13 +2,13 @@ import { Cart, Customer, Order } from "@prisma/client";
 import prisma from "../shared/prisma";
 
 interface OrderData {
-  customerId: string;
+  email: string;
   productId: string;
   quantity: number;
 }
 
 const createCartIntoDB = async (orderData: OrderData) => {
-  const { customerId, productId, quantity } = orderData;
+  const { email, productId, quantity } = orderData;
 
   // Ensure the product exists
   const product = await prisma.product.findFirstOrThrow({
@@ -20,7 +20,7 @@ const createCartIntoDB = async (orderData: OrderData) => {
   // Check if the cart already exists for the user
   let cart;
   cart = await prisma.cart.findUnique({
-    where: { customerId },
+    where: { email },
     include: { items: true },
   });
 
@@ -28,7 +28,7 @@ const createCartIntoDB = async (orderData: OrderData) => {
     // Create a new cart for the user if it doesn't exist
     cart = await prisma.cart.create({
       data: {
-        customerId,
+        email,
       },
       include: { items: true },
     });
@@ -59,7 +59,7 @@ const createCartIntoDB = async (orderData: OrderData) => {
   }
 
   return prisma.cart.findUnique({
-    where: { customerId },
+    where: { email },
     include: {
       items: {
         include: { product: true },
@@ -69,24 +69,30 @@ const createCartIntoDB = async (orderData: OrderData) => {
 };
 
 const getCartByCustomerIdFromDB = async (
-  CustomerId: string
-): Promise<Cart[]> => {
-  const result = await prisma.cart.findMany({
+  email: string
+): Promise<Cart | null> => {
+  const result = await prisma.cart.findFirst({
     where: {
-      customerId: CustomerId,
+      customer: {
+        email, // Use the email from the related Customer or User model
+      },
     },
     include: {
-      items: true,
-      customer: {
-        select: {
-          id: true,
-          name: true,
-          email: true,
+      items: {
+        include: {
+          product: {
+            select: {
+              id: true,
+              images: true,
+              price: true,
+              name: true,
+              discount: true,
+            },
+          },
         },
       },
     },
   });
-
   return result;
 };
 const getCartByVendorIdFromDB = async (vendorId: string): Promise<Order[]> => {
@@ -150,5 +156,6 @@ const deleteCartByCustomerFromDB = async (
 export const CartService = {
   createCartIntoDB,
   getCartByVendorIdFromDB,
+  getCartByCustomerIdFromDB,
   deleteCartByCustomerFromDB,
 };

@@ -13,6 +13,19 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getCartByCustomer = catchAsync(
+  async (req: Request & { user?: any }, res: Response) => {
+    const customer = req.user;
+    const result = await CartService.getCartByCustomerIdFromDB(customer?.email);
+    console.log("cartU", result);
+    sendResponse(res, {
+      statusCode: httpStatus.OK,
+      success: true,
+      message: " cart get successfully!",
+      data: result,
+    });
+  }
+);
 const getOrderByVendor = catchAsync(async (req: Request, res: Response) => {
   const result = await CartService.getCartByVendorIdFromDB(req.body.id);
   sendResponse(res, {
@@ -35,5 +48,6 @@ const deleteCartByCustomer = catchAsync(async (req: Request, res: Response) => {
 export const CartController = {
   createOrder,
   getOrderByVendor,
+  getCartByCustomer,
   deleteCartByCustomer,
 };

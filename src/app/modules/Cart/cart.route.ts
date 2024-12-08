@@ -6,6 +6,11 @@ import { CartController } from "./cart.controller";
 const router = express.Router();
 
 router.post("/", auth(UserRole.CUSTOMER), CartController.createOrder);
+router.get(
+  "/myCard",
+  auth(UserRole.CUSTOMER),
+  CartController.getCartByCustomer
+);
 router.get("/", auth(UserRole.VENDOR), CartController.getOrderByVendor);
 router.post("/", auth(UserRole.CUSTOMER), CartController.deleteCartByCustomer);
 
