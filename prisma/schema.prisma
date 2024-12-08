@@ -28,7 +28,6 @@ model Customer {
   id          String   @id @default(uuid())
   name        String
   email       String   @unique
-  password    String
   profilePhoto  String?
   contactNumber String?
   orders      Order[]
@@ -98,6 +97,7 @@ model Shop {
   vendor      Vendor   @relation(fields: [vendorId], references: [id])
   products    Product[]
   followers   Customer[]   @relation("ShopFollowers")
+  order       Order[]
   isDeleted   Boolean @default(false)
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -142,8 +142,25 @@ model Product {
   @@map("products")
 }
 
+
+model Review {
+  id        String   @id @default(uuid())
+  content   String
+  rating    Int
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String
+  customer      Customer     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("reviews")
+}
+
 model Order {
   id           String     @id @default(uuid())
+  shopId      String
+  shop        Shop     @relation(fields: [shopId], references: [id])
   customerId       String
   customer         Customer       @relation(fields: [customerId], references: [id])
   productId String
@@ -166,27 +183,16 @@ enum OrderStatus {
   CANCELLED
 }
 
-model Review {
-  id        String   @id @default(uuid())
-  content   String
-  rating    Int
-  productId String
-  product   Product  @relation(fields: [productId], references: [id])
-  userId    String
-  customer      Customer     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("reviews")
-}
 
 model Cart {
   id        String   @id @default(uuid())
-  userId    String   @unique
-  customer      Customer     @relation(fields: [userId], references: [id])
+  customerId    String   @unique
+  customer      Customer     @relation(fields: [customerId], references: [id])
   items     CartItem[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  
+  @@map("carts")
 }
 
 model CartItem {
@@ -196,6 +202,8 @@ model CartItem {
   cartId    String
   cart      Cart     @relation(fields: [cartId], references: [id])
   quantity  Int
+
+  @@map("cartItems")
 }
 
 model Coupon {
@@ -215,5 +223,7 @@ model RecentView {
   productId String
   product   Product  @relation(fields: [productId], references: [id])
   viewedAt  DateTime @default(now())
+
+  
 }
 

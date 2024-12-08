@@ -18,14 +18,7 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
 const getProductIntoDB = catchAsync(async (req: Request, res: Response) => {
   console.log("productAll", req.query);
   const filters = pick(req.query, productFilterableFields);
-  const options = pick(req.query, [
-    "limit",
-    "page",
-    "sortBy",
-    "sortOrder",
-    "offer",
-    "priceRange",
-  ]);
+  const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
   const result = await ProductService.getProductIntoDB(filters, options);
   sendResponse(res, {
     statusCode: httpStatus.OK,

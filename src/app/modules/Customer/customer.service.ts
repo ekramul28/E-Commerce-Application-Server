@@ -46,6 +46,43 @@ const getCustomerFromDB = async (
         : {
             createdAt: "desc",
           },
+
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      profilePhoto: true,
+      contactNumber: true,
+      orders: {
+        select: {
+          id: true,
+        },
+      },
+      reviews: {
+        select: {
+          id: true,
+        },
+      },
+      cart: {
+        select: {
+          id: true,
+        },
+      },
+      user: true,
+      followedShops: {
+        select: {
+          id: true,
+        },
+      },
+      recentView: {
+        select: {
+          id: true,
+        },
+      },
+      isDeleted: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   const total = await prisma.customer.count({
     where: whereConditions,

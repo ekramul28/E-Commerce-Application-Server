@@ -89,7 +89,7 @@ const createCustomer = async (req: any): Promise<Vendor> => {
     email: req.body.customer.email,
     password: hashedPassword,
     profilePhoto: req.body.customer.profilePhoto || null,
-    role: UserRole.VENDOR,
+    role: UserRole.CUSTOMER,
   };
 
   const result = await prisma.$transaction(async (transactionClient) => {
@@ -97,11 +97,11 @@ const createCustomer = async (req: any): Promise<Vendor> => {
       data: userData,
     });
 
-    const createdDoctorData = await transactionClient.customer.create({
+    const createdCustomerData = await transactionClient.customer.create({
       data: req.body.customer,
     });
 
-    return createdDoctorData;
+    return createdCustomerData;
   });
 
   return result;
