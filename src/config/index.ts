@@ -25,8 +25,8 @@ export default {
   amr_pay_url: process.env.AMRPAYURL,
   amr_pay_verify_url: process.env.AMRPAYURLVERYFIURL,
 
-  cancel_url: process.env.CANCELPAGE,
-  error_url: process.env.ERRORPAGE,
-  success_url: process.env.SUCCESSPAGE,
+  cancel_url: process.env.CANCELURL,
+  error_url: process.env.ERRORURL,
+  success_url: process.env.SUCCESSURL,
   reset_pass_ui_link: process.env.RESET_PASS_UI_LINK,
 };
