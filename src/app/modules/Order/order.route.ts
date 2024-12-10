@@ -7,6 +7,11 @@ const router = express.Router();
 
 router.post("/", auth(UserRole.CUSTOMER), OrderController.createOrder);
 router.get("/", auth(UserRole.VENDOR), OrderController.getOrderByVendor);
+router.get(
+  "/customerOrder",
+  auth(UserRole.CUSTOMER),
+  OrderController.getOrderByCustomerId
+);
 router.post(
   "/",
   auth(UserRole.CUSTOMER),

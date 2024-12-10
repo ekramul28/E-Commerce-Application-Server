@@ -71,6 +71,36 @@ const getOrdersByVendorIdFromDB = async (
 
   return result;
 };
+const getOrdersByCustomerIdFromDB = async (
+  vendorId: string
+): Promise<Order[]> => {
+  const result = await prisma.order.findMany({
+    where: {
+      product: {
+        shop: {
+          id: vendorId,
+        },
+      },
+    },
+    include: {
+      product: {
+        select: {
+          name: true,
+          price: true,
+        },
+      },
+      customer: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+        },
+      },
+    },
+  });
+
+  return result;
+};
 
 const deleteOrderByCustomerFromDB = async (
   id: string
@@ -104,5 +134,6 @@ const deleteOrderByCustomerFromDB = async (
 export const OrderService = {
   createOrderIntoDB,
   getOrdersByVendorIdFromDB,
+  getOrdersByCustomerIdFromDB,
   deleteOrderByCustomerFromDB,
 };

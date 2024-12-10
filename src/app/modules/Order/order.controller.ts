@@ -21,6 +21,15 @@ const getOrderByVendor = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
+const getOrderByCustomerId = catchAsync(async (req: Request, res: Response) => {
+  const result = await OrderService.getOrdersByCustomerIdFromDB(req.body.id);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "order get successfully!",
+    data: result,
+  });
+});
 const deleteOrderByCustomer = catchAsync(
   async (req: Request, res: Response) => {
     const result = await OrderService.deleteOrderByCustomerFromDB(req.body.id);
@@ -36,5 +45,6 @@ const deleteOrderByCustomer = catchAsync(
 export const OrderController = {
   createOrder,
   getOrderByVendor,
+  getOrderByCustomerId,
   deleteOrderByCustomer,
 };

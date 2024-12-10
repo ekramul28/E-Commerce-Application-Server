@@ -167,12 +167,15 @@ model Order {
   product   Product  @relation(fields: [productId], references: [id])
   paymentId    String?
   cartId  String?
+  quantity String
   status       OrderStatus @default(PENDING)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
 
   @@map("orders")
 }
+
+
 
 
 

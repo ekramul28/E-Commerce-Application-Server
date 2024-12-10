@@ -35,25 +35,34 @@ const afterPaymentPageDB = async (userId: string, tnxId: string) => {
     console.log("cart", cart);
 
     const cartProducts = cart?.items || [];
-
     const orderData = cartProducts?.map((item: any) => ({
       productId: item.product.id,
       shopId: item.product.shopId,
-      cardId: item.cartId,
+      cartId: item.cartId,
       customerId: userId,
       paymentId: tnxId,
+      quantity: item.quantity.toString(),
       status: OrderStatus.PAID,
     }));
 
-    const payment = await prisma.$transaction(async (tr) => {
-      const createPayment = tr.payment.create({ data: paymentData });
+    console.log(orderData);
 
-      const createOrder = tr.order.createMany({ data: orderData });
+    const payment = await prisma.$transaction(async (tr) => {
+      const createPayment = await tr.payment.create({ data: paymentData });
+      console.log("Payment created:", createPayment);
+
+      const createOrderResult = await tr.order.createMany({ data: orderData });
+      console.log("Order created, affected rows:", createOrderResult.count);
+
+      const deleteResult = await tr.cartItem.deleteMany({
+        where: {
+          cartId: cart.id,
+        },
+      });
+      console.log("Cart items deleted, count:", deleteResult.count);
 
       return createPayment;
     });
-
-    console.log("orderData", orderData);
   }
 
   // Return relevant payment details for further use
