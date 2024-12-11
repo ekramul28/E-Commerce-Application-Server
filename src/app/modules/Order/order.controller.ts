@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import catchAsync from "../../middlewares/catchAsync";
 import sendResponse from "../shared/sendResponse";
 import { OrderService } from "./order.service";
-
+import httpStatus from "http-status";
 const createOrder = catchAsync(async (req: Request, res: Response) => {
   const result = await OrderService.createOrderIntoDB(req.body);
   sendResponse(res, {
@@ -22,7 +22,10 @@ const getOrderByVendor = catchAsync(async (req: Request, res: Response) => {
   });
 });
 const getOrderByCustomerId = catchAsync(async (req: Request, res: Response) => {
-  const result = await OrderService.getOrdersByCustomerIdFromDB(req.body.id);
+  const { id } = req.params;
+
+  const result = await OrderService.getOrdersByCustomerIdFromDB(id);
+  console.log("inside con", result);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
