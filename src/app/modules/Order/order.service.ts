@@ -1,4 +1,4 @@
-import { Customer, Order } from "@prisma/client";
+import { Customer, Order, OrderStatus } from "@prisma/client";
 import prisma from "../shared/prisma";
 
 const createOrderIntoDB = async (orderData: any) => {
@@ -57,6 +57,7 @@ const getOrdersByVendorIdFromDB = async (
         select: {
           name: true,
           price: true,
+          images: true,
         },
       },
       customer: {
@@ -64,6 +65,7 @@ const getOrdersByVendorIdFromDB = async (
           id: true,
           name: true,
           email: true,
+          profilePhoto: true,
         },
       },
     },
@@ -100,6 +102,19 @@ const getOrdersByCustomerIdFromDB = async (
   return result;
 };
 
+const updateOrderByVendorFromDB = async (
+  id: string,
+  status: OrderStatus
+): Promise<Order | null> => {
+  const updatedOrder = await prisma.order.update({
+    where: { id },
+    data: {
+      status: status || undefined, // Update only if provided
+    },
+  });
+
+  return updatedOrder;
+};
 const deleteOrderByCustomerFromDB = async (
   id: string
 ): Promise<Order | null> => {
@@ -134,4 +149,5 @@ export const OrderService = {
   getOrdersByVendorIdFromDB,
   getOrdersByCustomerIdFromDB,
   deleteOrderByCustomerFromDB,
+  updateOrderByVendorFromDB,
 };

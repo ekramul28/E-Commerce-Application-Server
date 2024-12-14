@@ -44,10 +44,21 @@ const deleteOrderByCustomer = catchAsync(
     });
   }
 );
+const updateOrderByVendor = catchAsync(async (req: Request, res: Response) => {
+  const { orderId, status } = req.body;
+  const result = await OrderService.updateOrderByVendorFromDB(orderId, status);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "update successfully!",
+    data: result,
+  });
+});
 
 export const OrderController = {
   createOrder,
   getOrderByVendor,
   getOrderByCustomerId,
   deleteOrderByCustomer,
+  updateOrderByVendor,
 };

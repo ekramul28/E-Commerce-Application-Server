@@ -40,7 +40,7 @@ const getAllFromDB = catchAsync(async (req: Request, res: Response) => {
   // console.log(req.query)
   const filters = pick(req.query, userFilterableFields);
   const options = pick(req.query, ["limit", "page", "sortBy", "sortOrder"]);
-
+  console.log("r", req.query);
   const result = await userService.getAllFromDB(filters, options);
 
   sendResponse(res, {

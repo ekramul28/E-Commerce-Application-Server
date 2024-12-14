@@ -111,9 +111,9 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
   const { page, limit, skip } = paginationHelper.calculatePagination(options);
   const { searchTerm, ...filterData } = params;
 
+  console.log("params", params);
   const andCondions: Prisma.UserWhereInput[] = [];
 
-  //console.log(filterData);
   if (params.searchTerm) {
     andCondions.push({
       OR: userSearchAbleFields.map((field) => ({
@@ -160,6 +160,7 @@ const getAllFromDB = async (params: any, options: IPaginationOptions) => {
       updatedAt: true,
       admin: true,
       vendor: true,
+      customer: true,
     },
   });
 

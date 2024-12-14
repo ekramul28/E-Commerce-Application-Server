@@ -119,6 +119,20 @@ const getShopByIdFromDB = async (id: string): Promise<Shop | null> => {
     where: {
       vendorId: id,
     },
+    select: {
+      id: true,
+      name: true,
+      logo: true,
+      description: true,
+      vendorId: true,
+      vendor: true,
+      products: true,
+      followers: true,
+      order: true,
+      isDeleted: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
   return result;
 };

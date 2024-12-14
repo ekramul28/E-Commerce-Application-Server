@@ -12,6 +12,7 @@ router.get(
   auth(UserRole.CUSTOMER),
   OrderController.getOrderByCustomerId
 );
+router.put("/", auth(UserRole.VENDOR), OrderController.updateOrderByVendor);
 router.post(
   "/",
   auth(UserRole.CUSTOMER),
