@@ -10,6 +10,8 @@ import { orderRoutes } from "../modules/Order/order.route";
 import { CategoryRoutes } from "../modules/Category/Category.route";
 import { CartRoutes } from "../modules/Cart/cart.route";
 import { PaymentRoutes } from "../modules/payment/payment.route";
+import { followRoutes } from "../modules/followAndUnfollow/followAndUnfollow.route";
+import { resentViewRoutes } from "../modules/ResentView/resentView.route";
 
 const router = express.Router();
 
@@ -29,6 +31,10 @@ const moduleRoutes = [
   {
     path: "/admin",
     router: AdminRouter,
+  },
+  {
+    path: "/resentView",
+    router: resentViewRoutes,
   },
   {
     path: "/customer",
@@ -53,6 +59,10 @@ const moduleRoutes = [
   {
     path: "/cart",
     router: CartRoutes,
+  },
+  {
+    path: "/follow",
+    router: followRoutes,
   },
   {
     path: "/category",

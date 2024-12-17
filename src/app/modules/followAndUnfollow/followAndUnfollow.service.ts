@@ -37,6 +37,7 @@ const followCount = async (req: any) => {
 };
 const isFollow = async (req: any) => {
   const { customerId, shopId } = req.body;
+  console.log("gete", req.body);
 
   const shop = await prisma.shop.findFirst({
     where: {

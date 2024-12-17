@@ -21,4 +21,4 @@ router.get(
   auth(UserRole.CUSTOMER),
   followAndUnFollowController.isFollow
 );
-export const shopRoutes = router;
+export const followRoutes = router;
