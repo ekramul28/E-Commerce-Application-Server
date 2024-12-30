@@ -16,12 +16,8 @@ router.post(
     return ShopController.createShop(req, res, next);
   }
 );
-router.get("/", auth(UserRole.ADMIN), ShopController.getShop);
-router.get(
-  "/:id",
-  auth(UserRole.ADMIN, UserRole.VENDOR),
-  ShopController.getShopById
-);
+router.get("/", ShopController.getShop);
+router.get("/:id", ShopController.getShopById);
 router.patch(
   "/:id",
   auth(UserRole.ADMIN, UserRole.VENDOR),
